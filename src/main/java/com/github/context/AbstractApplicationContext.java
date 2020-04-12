@@ -3,6 +3,8 @@ package com.github.context;
 import com.github.beans.BeanPostProcessor;
 import com.github.beans.definition.BeanDefinition;
 import com.github.beans.factory.AbstractBeanFactory;
+import com.github.message.MessageHandlerHolder;
+import com.github.message.MessageHandlerInvocation;
 
 import java.util.List;
 
@@ -13,6 +15,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     protected AbstractBeanFactory beanFactory;
 
+    private MessageHandlerHolder messageHandlerHolder = new MessageHandlerHolder();
+
     public AbstractApplicationContext(AbstractBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
     }
@@ -21,6 +25,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         loadBeanDefinitions(beanFactory);
         //抽象应用上下文 向beanFactory注册beanPostProcessor
         registerBeanPostProcessors(beanFactory);
+        //消息处理者handler 扫描所有的bean 对方法上有EventListener注解的
+        beanFactory.addBeanPostProcessor(messageHandlerHolder);
         //将自身注入进bean容器
         registerSelf();
         onRefresh();
@@ -52,6 +58,19 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     @Override
     public Object getBean(String name) throws Exception {
         return beanFactory.getBean(name);
+    }
+
+    @Override
+    public void publishEvent(Object object) {
+        for (MessageHandlerInvocation messageHandlerInvocation : messageHandlerHolder.getMessageHandlers()) {
+            if (messageHandlerInvocation.getParameterType().getType().isInstance(object)) {
+                try {
+                    messageHandlerInvocation.handleMessage(object);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

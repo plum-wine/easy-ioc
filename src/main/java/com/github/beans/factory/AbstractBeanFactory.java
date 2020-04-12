@@ -1,12 +1,11 @@
 package com.github.beans.factory;
 
 import com.github.annotation.AutoWired;
-import com.github.beans.definition.BeanDefinition;
 import com.github.beans.BeanPostProcessor;
+import com.github.beans.definition.BeanDefinition;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -57,7 +56,6 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             //初始化之后  对bean进行增强 原始的bean 被代理bean 的引用持有
             Object preBean = bean;
-
             bean = beanPostProcessor.postProcessAfterInitialization(bean, name);
             //断言 增强后的 bean 是原始bean的父类
             assert preBean.getClass().isAssignableFrom(bean.getClass());
@@ -66,17 +64,17 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
-        Constructor[] constructors = beanDefinition.getBeanClass().getConstructors();
+        Constructor<?>[] constructors = beanDefinition.getBeanClass().getConstructors();
         for (int i = 0; i < constructors.length; i++) {
-            if (constructors[i].isAnnotationPresent(AutoWired.class) && ((AutoWired) constructors[i].getAnnotation(AutoWired.class)).required()
-            ) {
-                List objs = new ArrayList();
-                for (Class clazz : constructors[i].getParameterTypes()) {
-                    List beansForType = getBeansForType(clazz);
+            if (constructors[i].isAnnotationPresent(AutoWired.class) && (constructors[i].getAnnotation(AutoWired.class)).required()) {
+                List<Object> objs = new ArrayList<>();
+                for (Class<?> clazz : constructors[i].getParameterTypes()) {
+                    List<Object> beansForType = getBeansForType(clazz);
                     if (beansForType.size() == 1) {
                         objs.add(beansForType.get(0));
                     } else {
-                        //存在两个及其以上的候选注入bean TODO 实现Qualifier
+                        // 存在两个及其以上的候选注入bean
+                        // TODO 实现Qualifier
                     }
                 }
                 if (objs.size() == constructors[i].getParameterCount()) {
@@ -95,8 +93,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     public void preInstantiateSingletons() throws Exception {
-        for (Iterator it = this.beanDefinitionNames.iterator(); it.hasNext(); ) {
-            String beanName = (String) it.next();
+        for (String beanName : this.beanDefinitionNames) {
             getBean(beanName);
         }
     }
@@ -108,16 +105,14 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         return bean;
     }
 
-    protected void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
+    protected abstract void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception;
 
-    }
-
-    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) throws Exception {
+    public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
         this.beanPostProcessors.add(beanPostProcessor);
     }
 
     // 所有的bean都是从beanDefinition中取出来的,
-    public List<Object> getBeansForType(Class type) throws Exception {
+    public List<Object> getBeansForType(Class<?> type) throws Exception {
         List<Object> beans = new ArrayList<>();
         for (String beanDefinitionName : beanDefinitionNames) {
             if (type.isAssignableFrom(beanDefinitionMap.get(beanDefinitionName).getBeanClass())) {
@@ -126,5 +121,4 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
         return beans;
     }
-
 }

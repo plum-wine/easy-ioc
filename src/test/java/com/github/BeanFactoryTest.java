@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.Map;
 
 /**
- * @author yihua.huang@dianping.com
+ * @author plum-wine
  */
 public class BeanFactoryTest {
 

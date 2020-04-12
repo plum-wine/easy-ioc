@@ -5,6 +5,7 @@ import com.github.beans.PropertyValue;
 import com.github.beans.definition.AbstractBeanDefinitionReader;
 import com.github.beans.definition.BeanDefinition;
 import com.github.beans.io.ResourceLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -40,14 +41,13 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
 	public void registerBeanDefinitions(Document doc) {
 		Element root = doc.getDocumentElement();
-
 		parseBeanDefinitions(root);
 	}
 
 	protected void parseBeanDefinitions(Element root) {
-		NodeList nl = root.getChildNodes();
-		for (int i = 0; i < nl.getLength(); i++) {
-			Node node = nl.item(i);
+		NodeList childNodes = root.getChildNodes();
+		for (int i = 0; i < childNodes.getLength(); i++) {
+			Node node = childNodes.item(i);
 			if (node instanceof Element) {
 				Element ele = (Element) node;
 				processBeanDefinition(ele);
@@ -55,11 +55,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 		}
 	}
 
-	protected void processBeanDefinition(Element ele) {
-		String name = ele.getAttribute("id");
-		String className = ele.getAttribute("class");
+	protected void processBeanDefinition(Element element) {
+		// 获取xml中的值
+		String name = element.getAttribute("id");
+		String className = element.getAttribute("class");
 		BeanDefinition beanDefinition = new BeanDefinition();
-		processProperty(ele, beanDefinition);
+		processProperty(element, beanDefinition);
 		beanDefinition.setBeanClassName(className);
 		getRegistry().put(name, beanDefinition);
 	}
@@ -72,13 +73,12 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 				Element propertyEle = (Element) node;
 				String name = propertyEle.getAttribute("name");
 				String value = propertyEle.getAttribute("value");
-				if (value != null && value.length() > 0) {
+				if (StringUtils.isNotBlank(value)) {
 					beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, value));
 				} else {
 					String ref = propertyEle.getAttribute("ref");
-					if (ref == null || ref.length() == 0) {
-						throw new IllegalArgumentException("Configuration problem: <property> element for property '"
-								+ name + "' must specify a ref or value");
+					if (StringUtils.isBlank(ref)) {
+						throw new IllegalArgumentException("Configuration problem: <property> element for property '" + name + "' must specify a ref or value");
 					}
 					BeanReference beanReference = new BeanReference(ref);
 					beanDefinition.getPropertyValues().addPropertyValue(new PropertyValue(name, beanReference));

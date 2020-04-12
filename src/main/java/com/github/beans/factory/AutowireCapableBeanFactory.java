@@ -18,16 +18,16 @@ import java.util.List;
 public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
     @Override
-    protected void applyPropertyValues(Object bean, BeanDefinition mbd) throws Exception {
+    protected void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception {
         if (bean instanceof BeanFactoryAware) {
             ((BeanFactoryAware) bean).setBeanFactory(this);
         }
-        applyPropertyValueForSetter(bean, mbd);
+        applyPropertyValueForSetter(bean, beanDefinition);
         applyPropertyValuesForField(bean);
     }
 
-    private void applyPropertyValueForSetter(Object bean, BeanDefinition mbd) throws Exception {
-        for (PropertyValue propertyValue : mbd.getPropertyValues().getPropertyValues()) {
+    private void applyPropertyValueForSetter(Object bean, BeanDefinition beanDefinition) throws Exception {
+        for (PropertyValue propertyValue : beanDefinition.getPropertyValues().getPropertyValues()) {
             Object value = propertyValue.getValue();
             if (value instanceof BeanReference) {
                 BeanReference beanReference = (BeanReference) value;
@@ -35,11 +35,9 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
             }
 
             try {
-                Method declaredMethod = bean.getClass().getDeclaredMethod(
-                        "set" + propertyValue.getName().substring(0, 1).toUpperCase()
-                                + propertyValue.getName().substring(1), value.getClass());
+                // 拼出setter方法
+                Method declaredMethod = bean.getClass().getDeclaredMethod("set" + propertyValue.getName().substring(0, 1).toUpperCase() + propertyValue.getName().substring(1), value.getClass());
                 declaredMethod.setAccessible(true);
-
                 declaredMethod.invoke(bean, value);
             } catch (NoSuchMethodException e) {
                 Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
@@ -53,7 +51,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(AutoWired.class) && field.getAnnotation(AutoWired.class).required()) {
                 field.setAccessible(true);
-                List beansForType = getBeansForType(field.getType());
+                List<Object> beansForType = getBeansForType(field.getType());
 
                 //todo implement qualifier
                 if (beansForType.size() != 1) {

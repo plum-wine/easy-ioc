@@ -4,6 +4,9 @@ import lombok.Data;
 
 /**
  * @author plum-wine
+ * @date 2020/04/12 17:07
+ * *****************
+ * function: bean对象的holder
  */
 @Data
 public class BeanReference {

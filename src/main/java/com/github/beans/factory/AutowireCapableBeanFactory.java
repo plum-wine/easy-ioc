@@ -1,7 +1,7 @@
 package com.github.beans.factory;
 
 import com.github.annotation.AutoWired;
-import com.github.aop.BeanFactoryAware;
+import com.github.beans.BeanFactoryAware;
 import com.github.beans.BeanReference;
 import com.github.beans.PropertyValue;
 import com.github.beans.definition.BeanDefinition;

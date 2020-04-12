@@ -3,9 +3,7 @@ package com.github.message;
 import java.lang.annotation.*;
 
 /**
- * @author winters
- * 创建时间：13/03/2018 15:52
- * 创建原因：
+ * @author plum-wine
  **/
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

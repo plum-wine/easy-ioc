@@ -4,7 +4,7 @@ import com.github.beans.definition.BeanDefinition;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.beans.factory.AutowireCapableBeanFactory;
 import com.github.beans.io.ResourceLoader;
-import com.github.beans.xml.XmlBeanDefinitionReader;
+import com.github.beans.XmlBeanDefinitionReader;
 import com.github.service.HelloWorldService;
 import org.junit.Test;
 

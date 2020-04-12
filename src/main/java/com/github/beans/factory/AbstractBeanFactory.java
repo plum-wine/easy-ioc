@@ -112,8 +112,8 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     }
 
     // 所有的bean都是从beanDefinition中取出来的,
-    public List<Object> getBeansForType(Class<?> type) throws Exception {
-        List<Object> beans = new ArrayList<>();
+    public List getBeansForType(Class<?> type) throws Exception {
+        List beans = new ArrayList<>();
         for (String beanDefinitionName : beanDefinitionNames) {
             if (type.isAssignableFrom(beanDefinitionMap.get(beanDefinitionName).getBeanClass())) {
                 beans.add(getBean(beanDefinitionName));

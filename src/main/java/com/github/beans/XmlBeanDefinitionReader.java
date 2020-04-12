@@ -1,4 +1,4 @@
-package com.github.beans.xml;
+package com.github.beans;
 
 import com.github.beans.BeanReference;
 import com.github.beans.PropertyValue;

@@ -11,4 +11,5 @@ public class ProxyFactory extends AdvisedSupport implements AopProxy {
 	protected final AopProxy createAopProxy() {
 		return new Cglib2AopProxy(this);
 	}
+
 }

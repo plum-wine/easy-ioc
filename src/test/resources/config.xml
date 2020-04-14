@@ -9,11 +9,11 @@
         <property name="printService" ref="printService"/>
     </bean>
 
-    <bean id="beanInitializeLogger" class="com.github.BeanInitializeLogger"/>
-
-    <bean id="timeInterceptor" class="com.github.aop.TimerInterceptor"/>
+<!--    <bean id="beanInitializeLogger" class="com.github.BeanInitializeLogger"/>-->
 
     <bean id="autoProxyCreator" class="com.github.aop.AspectJAwareAdvisorAutoProxyCreator"/>
+
+    <bean id="timeInterceptor" class="com.github.aop.TimerInterceptor"/>
 
     <bean id="aspectjAspect" class="com.github.aop.AspectJExpressionPointcutAdvisor">
         <property name="advice" ref="timeInterceptor"/>

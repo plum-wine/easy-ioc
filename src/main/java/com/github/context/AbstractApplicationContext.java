@@ -5,7 +5,10 @@ import com.github.beans.definition.BeanDefinition;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.message.MessageHandlerHolder;
 import com.github.message.MessageHandlerInvocation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 /**
@@ -16,6 +19,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     protected AbstractBeanFactory beanFactory;
 
     private MessageHandlerHolder messageHandlerHolder = new MessageHandlerHolder();
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     public AbstractApplicationContext(AbstractBeanFactory beanFactory) {
         this.beanFactory = beanFactory;
@@ -40,6 +45,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         beanFactory.registerBeanDefinition("applicationContext", self);
     }
 
+    // 子类实现如何获取BeanDefinition
     protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
 
     //从beanFactory中 拿出所有的 BeanPostProcessor接口的实现类
@@ -66,8 +72,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
             if (messageHandlerInvocation.getParameterType().getType().isInstance(object)) {
                 try {
                     messageHandlerInvocation.handleMessage(object);
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    LOGGER.error("handleMessage error", e);
                 }
             }
         }

@@ -15,7 +15,7 @@ public class JdkDynamicAopProxyTest {
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
         helloWorldService.helloWorld();
 
-        // 1. 设置被代理对象(Joinpoint)
+        // 1. 设置被代理对象(JoinPoint)
         AdvisedSupport advisedSupport = new AdvisedSupport();
         TargetSource targetSource = new TargetSource(helloWorldService, HelloWorldServiceImpl.class, HelloWorldService.class);
         advisedSupport.setTargetSource(targetSource);
@@ -33,7 +33,7 @@ public class JdkDynamicAopProxyTest {
     }
 
     @Test
-    public void test() {
+    public void testCode() {
         HelloWorldService helloWorldService = new TestService();
 
         // 1. 设置被代理对象(JoinPoint)

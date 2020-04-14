@@ -47,4 +47,5 @@ public class ReflectiveMethodInvocation implements MethodInvocation {
 	public AccessibleObject getStaticPart() {
 		return method;
 	}
+
 }

@@ -17,6 +17,6 @@
 
     <bean id="aspectjAspect" class="com.github.aop.AspectJExpressionPointcutAdvisor">
         <property name="advice" ref="timeInterceptor"/>
-        <property name="expression" value="execution(* com.github.*.*(..))"/>
+        <property name="expression" value="execution(* com.github.service.*.*(..))"/>
     </bean>
 </beans>

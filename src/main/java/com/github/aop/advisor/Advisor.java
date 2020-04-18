@@ -1,4 +1,4 @@
-package com.github.aop;
+package com.github.aop.advisor;
 
 import org.aopalliance.aop.Advice;
 

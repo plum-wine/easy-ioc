@@ -22,7 +22,7 @@ public class BeanDefinitionReader {
     @Test
     public void test() throws Exception {
         XmlBeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(new ResourceLoader());
-        beanDefinitionReader.loadBeanDefinitions("config.xml");
+        beanDefinitionReader.loadBeanDefinitions("applicationContext.xml");
 
         Map<String, BeanDefinition> registry = beanDefinitionReader.getRegistry();
         registry.forEach((key, value) -> {

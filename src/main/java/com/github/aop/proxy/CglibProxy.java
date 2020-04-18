@@ -1,5 +1,7 @@
-package com.github.aop;
+package com.github.aop.proxy;
 
+import com.github.aop.AdvisedSupport;
+import com.github.aop.ReflectiveMethodInvocation;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -9,9 +11,9 @@ import java.lang.reflect.Method;
 /**
  * @author plum-wine
  */
-public class Cglib2AopProxy extends AbstractAopProxy {
+public class CglibProxy extends AbstractAopProxy {
 
-	public Cglib2AopProxy(AdvisedSupport advised) {
+	public CglibProxy(AdvisedSupport advised) {
 		super(advised);
 	}
 

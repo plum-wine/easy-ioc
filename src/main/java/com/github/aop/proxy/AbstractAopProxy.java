@@ -1,4 +1,7 @@
-package com.github.aop;
+package com.github.aop.proxy;
+
+import com.github.aop.AdvisedSupport;
+import com.github.aop.proxy.AopProxy;
 
 /**
  * @author plum-wine

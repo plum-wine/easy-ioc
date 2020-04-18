@@ -12,7 +12,7 @@ import java.lang.invoke.MethodHandles;
  * *********************
  * function:
  */
-public class TestService implements HelloWorldService {
+public class AopHelloService implements HelloWorldService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

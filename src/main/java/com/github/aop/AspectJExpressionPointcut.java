@@ -1,5 +1,8 @@
 package com.github.aop;
 
+import com.github.aop.pointcut.ClassFilter;
+import com.github.aop.pointcut.MethodMatcher;
+import com.github.aop.pointcut.Pointcut;
 import org.aspectj.weaver.tools.PointcutExpression;
 import org.aspectj.weaver.tools.PointcutParser;
 import org.aspectj.weaver.tools.PointcutPrimitive;
@@ -16,7 +19,6 @@ public class AspectJExpressionPointcut implements Pointcut, ClassFilter, MethodM
 
 	private String expression;
 
-	//切点表达式
 	private PointcutExpression pointcutExpression;
 
 	private static final Set<PointcutPrimitive> DEFAULT_SUPPORTED_PRIMITIVES = new HashSet<PointcutPrimitive>();

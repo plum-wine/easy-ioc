@@ -1,6 +1,9 @@
 package com.github.aop;
 
 
+import com.github.aop.proxy.AopProxy;
+import com.github.aop.proxy.CglibProxy;
+
 public class ProxyFactory extends AdvisedSupport implements AopProxy {
 
 	@Override
@@ -9,7 +12,7 @@ public class ProxyFactory extends AdvisedSupport implements AopProxy {
 	}
 
 	protected final AopProxy createAopProxy() {
-		return new Cglib2AopProxy(this);
+		return new CglibProxy(this);
 	}
 
 }

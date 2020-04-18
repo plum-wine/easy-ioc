@@ -5,7 +5,6 @@ import lombok.Data;
 
 /**
  * bean的内容及元数据，保存在BeanFactory中，包装bean的实体
- *
  * @author plum-wine
  */
 @Data
@@ -30,4 +29,5 @@ public class BeanDefinition {
 			e.printStackTrace();
 		}
 	}
+
 }

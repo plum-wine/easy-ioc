@@ -1,5 +1,7 @@
-package com.github.aop;
+package com.github.aop.proxy;
 
+import com.github.aop.AdvisedSupport;
+import com.github.aop.ReflectiveMethodInvocation;
 import org.aopalliance.intercept.MethodInterceptor;
 
 import java.lang.reflect.InvocationHandler;
@@ -11,10 +13,10 @@ import java.lang.reflect.Proxy;
  *
  * @author plum-wine
  */
-public class JdkDynamicAopProxy extends AbstractAopProxy implements InvocationHandler {
+public class JdkDynamicProxy extends AbstractAopProxy implements InvocationHandler {
 
 	// advisedSupport 调用实际方法前 调用hook方法 , 标明需要 拦截哪些方法
-	public JdkDynamicAopProxy(AdvisedSupport advised) {
+	public JdkDynamicProxy(AdvisedSupport advised) {
 		super(advised);
 	}
 

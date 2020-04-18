@@ -16,7 +16,6 @@ public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
     private String configLocation;
 
-
     public ClassPathXmlApplicationContext(String configLocation) throws Exception {
         this(configLocation, new AutowireCapableBeanFactory());
     }

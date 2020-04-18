@@ -13,6 +13,8 @@ import java.util.List;
 
 /**
  * @author plum-wine
+ * applicationContext的模板类,对BeanFacotry进行增强
+ * 事件,注册BeanPostProcessor,自动加载BeanDefinition,加载所有bean
  */
 public abstract class AbstractApplicationContext implements ApplicationContext {
 
@@ -37,6 +39,13 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         onRefresh();
     }
 
+    /**
+     * 子类实现如何获取BeanDefinition
+     * xml?
+     * annotation?
+     */
+    protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
+
     private void registerSelf() throws Exception {
         BeanDefinition self = new BeanDefinition();
         self.setBeanClassName(this.getClass().getName());
@@ -45,20 +54,19 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         beanFactory.registerBeanDefinition("applicationContext", self);
     }
 
-    // 子类实现如何获取BeanDefinition
-    protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
+    protected void onRefresh() throws Exception {
+        beanFactory.preInstantiateSingletons();
+    }
 
-    //从beanFactory中 拿出所有的 BeanPostProcessor接口的实现类
+    /**
+     * 从beanFactory中取出所有的BeanPostProcessor接口的实现类
+     */
     protected void registerBeanPostProcessors(AbstractBeanFactory beanFactory) throws Exception {
         List beanPostProcessors = beanFactory.getBeansForType(BeanPostProcessor.class);
-        //全部加入到beanFactory的 beanPostProcessors 引用中去
+        // 全部加入到beanFactory的 beanPostProcessors 引用中去
         for (Object beanPostProcessor : beanPostProcessors) {
             beanFactory.addBeanPostProcessor((BeanPostProcessor) beanPostProcessor);
         }
-    }
-
-    protected void onRefresh() throws Exception {
-        beanFactory.preInstantiateSingletons();
     }
 
     @Override

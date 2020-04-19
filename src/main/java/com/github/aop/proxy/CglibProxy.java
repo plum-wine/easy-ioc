@@ -1,7 +1,7 @@
 package com.github.aop.proxy;
 
-import com.github.aop.AdvisedSupport;
 import com.github.aop.ReflectiveMethodInvocation;
+import com.github.aop.advisor.AdvisedSupport;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -23,8 +23,7 @@ public class CglibProxy extends AbstractAopProxy {
 		enhancer.setSuperclass(advised.getTargetSource().getTargetClass());
 		enhancer.setInterfaces(advised.getTargetSource().getInterfaces());
 		enhancer.setCallback(new DynamicAdvisedInterceptor(advised));
-		Object enhanced = enhancer.create();
-		return enhanced;
+		return enhancer.create();
 	}
 
 	private static class DynamicAdvisedInterceptor implements MethodInterceptor {

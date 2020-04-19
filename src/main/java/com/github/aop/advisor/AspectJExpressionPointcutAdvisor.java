@@ -1,6 +1,6 @@
 package com.github.aop.advisor;
 
-import com.github.aop.AspectJExpressionPointcut;
+import com.github.aop.pointcut.AspectJExpressionPointcut;
 import lombok.Data;
 import org.aopalliance.aop.Advice;
 

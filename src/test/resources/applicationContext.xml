@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans>
+    <bean id="printService" class="com.github.service.impl.PrintServiceImpl">
+        <property name="helloWorldService" ref="helloWorldService"/>
+    </bean>
+
+    <bean id="helloWorldService" class="com.github.service.impl.HelloWorldServiceImpl">
+        <property name="text" value="Hello World!"/>
+        <property name="printService" ref="printService"/>
+    </bean>
+
+    <bean id="beanInitializeLogger" class="com.github.BeanInitializeLogger"/>
+
+<!--    <bean id="autoProxyCreator" class="com.github.aop.AspectJAwareAdvisorAutoProxyCreator"/>-->
+
+<!--    <bean id="timeInterceptor" class="com.github.aop.TimerInterceptor"/>-->
+
+<!--    <bean id="aspectjAspect" class="com.github.aop.advisor.AspectJExpressionPointcutAdvisor">-->
+<!--        <property name="advice" ref="timeInterceptor"/>-->
+<!--        <property name="expression" value="execution(* com.github.service.*.*(..))"/>-->
+<!--    </bean>-->
+</beans>

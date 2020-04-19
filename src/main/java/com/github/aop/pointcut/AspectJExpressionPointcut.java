@@ -1,8 +1,5 @@
-package com.github.aop;
+package com.github.aop.pointcut;
 
-import com.github.aop.pointcut.ClassFilter;
-import com.github.aop.pointcut.MethodMatcher;
-import com.github.aop.pointcut.Pointcut;
 import org.aspectj.weaver.tools.PointcutExpression;
 import org.aspectj.weaver.tools.PointcutParser;
 import org.aspectj.weaver.tools.PointcutPrimitive;
@@ -52,6 +49,7 @@ public class AspectJExpressionPointcut implements Pointcut, ClassFilter, MethodM
 	}
 
 	private PointcutExpression buildPointcutExpression() {
+		// 解析Pointcut表达式
 		return pointcutParser.parsePointcutExpression(expression);
 	}
 

@@ -1,6 +1,8 @@
 package com.github.aop;
 
+import com.github.aop.advisor.AdvisedSupport;
 import com.github.aop.proxy.CglibProxy;
+import com.github.service.PrintService;
 import com.github.service.impl.AopHelloService;
 import com.github.context.ApplicationContext;
 import com.github.context.ClassPathXmlApplicationContext;
@@ -12,8 +14,12 @@ public class Cglib2AopProxyTest {
     @Test
     public void test() throws Exception {
         ApplicationContext applicationContext = new ClassPathXmlApplicationContext("aop.xml");
+        // 此处的代理只实现了一层
         HelloWorldService helloWorldService = (HelloWorldService) applicationContext.getBean("helloWorldService");
         helloWorldService.helloWorld();
+
+        PrintService printService = (PrintService) applicationContext.getBean("printService");
+        printService.print("text");
     }
 
     @Test

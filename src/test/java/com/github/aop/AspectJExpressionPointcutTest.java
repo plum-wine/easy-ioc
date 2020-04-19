@@ -1,5 +1,6 @@
 package com.github.aop;
 
+import com.github.aop.pointcut.AspectJExpressionPointcut;
 import com.github.service.HelloWorldService;
 import com.github.service.impl.HelloWorldServiceImpl;
 import org.junit.Assert;

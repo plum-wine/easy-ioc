@@ -1,7 +1,7 @@
 package com.github.aop;
 
 /**
- * 被代理的对象
+ * 被代理的目标对象
  */
 public class TargetSource {
 

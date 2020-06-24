@@ -32,9 +32,9 @@ import java.util.Set;
  */
 public class ControllerRequestRequestProcessor implements RequestProcessor {
 
-    private BeanContainer beanContainer;
+    private final BeanContainer beanContainer;
 
-    private Map<RequestPathInfo, ControllerMethod> pathControllerMap = Maps.newConcurrentMap();
+    private final Map<RequestPathInfo, ControllerMethod> pathControllerMap = Maps.newConcurrentMap();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 

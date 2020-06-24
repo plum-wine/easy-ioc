@@ -21,7 +21,7 @@ public class Main {
     @Test
     public void hello() {
         BeanContainer instance = BeanContainer.getInstance();
-        instance.loadBeans();
+        instance.loadBeans("com.github");
 
         DependencyInjector dependencyInjector = new DependencyInjector();
         dependencyInjector.doIoc();

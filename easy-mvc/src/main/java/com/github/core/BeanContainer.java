@@ -49,11 +49,11 @@ public class BeanContainer {
         return BeanContainerHolder.HOLDER.instance;
     }
 
-    public synchronized void loadBeans() {
+    public synchronized void loadBeans(String packages) {
         if (isLoad) {
             return;
         }
-        Set<Class<?>> classes = ClassUtils.extractPackageClass("com.github");
+        Set<Class<?>> classes = ClassUtils.extractPackageClass(packages);
         classes.forEach(clazz -> {
             for (Class<? extends Annotation> annotation : BEAN_ANNOTATIONS) {
                 if (clazz.isAnnotationPresent(annotation)) {
@@ -69,9 +69,9 @@ public class BeanContainer {
         return classBeans.keySet();
     }
 
-    public Set<Class<?>> getClassesByAnnotation(Annotation annotation) {
+    public Set<Class<?>> getClassesByAnnotation(Class<? extends Annotation> annotation) {
         return getClasses().stream()
-                .filter(clazz -> clazz.isAnnotationPresent(annotation.getClass()))
+                .filter(clazz -> clazz.isAnnotationPresent(annotation))
                 .collect(Collectors.toSet());
     }
 

@@ -21,5 +21,7 @@ public class ClassUtilsTest {
     public void extractPackageClass() {
         Set<Class<?>> classes = ClassUtils.extractPackageClass("com.github");
         classes.forEach(clazz -> LOGGER.info(clazz.getName()));
+
+
     }
 }

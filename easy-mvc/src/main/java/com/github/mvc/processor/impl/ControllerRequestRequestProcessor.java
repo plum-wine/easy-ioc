@@ -4,8 +4,12 @@ import com.github.core.BeanContainer;
 import com.github.mvc.RequestProcessorChain;
 import com.github.mvc.annotation.RequestMapping;
 import com.github.mvc.annotation.RequestParam;
+import com.github.mvc.annotation.ResponseBody;
 import com.github.mvc.processor.RequestProcessor;
+import com.github.mvc.render.ResultRender;
+import com.github.mvc.render.impl.JsonResultRender;
 import com.github.mvc.render.impl.ResourceNotFoundRender;
+import com.github.mvc.render.impl.ViewResultRender;
 import com.github.mvc.type.ControllerMethod;
 import com.github.mvc.type.RequestPathInfo;
 import com.github.utils.ConvertUtils;
@@ -112,7 +116,18 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
     }
 
     private void setResultRender(Object result, ControllerMethod controllerMethod, RequestProcessorChain requestProcessorChain) {
-
+        if (Objects.isNull(result)) {
+            return;
+        } else {
+            Method invokeMethod = controllerMethod.getInvokeMethod();
+            ResultRender resultRender;
+            if (invokeMethod.isAnnotationPresent(ResponseBody.class)) {
+                resultRender = new JsonResultRender(result);
+            } else {
+                resultRender = new ViewResultRender(result);
+            }
+            requestProcessorChain.setResultRender(resultRender);
+        }
     }
 
     private Object invokeControllerMethod(ControllerMethod controllerMethod, HttpServletRequest request) {

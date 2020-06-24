@@ -10,6 +10,9 @@ import com.github.mvc.render.ResultRender;
  * function:
  */
 public class JsonResultRender implements ResultRender {
+    public JsonResultRender(Object result) {
+    }
+
     @Override
     public void render(RequestProcessorChain requestProcessorChain) throws Exception {
 

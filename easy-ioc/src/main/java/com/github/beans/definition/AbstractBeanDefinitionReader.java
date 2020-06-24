@@ -1,8 +1,8 @@
 package com.github.beans.definition;
 
 import com.github.beans.io.ResourceLoader;
+import com.google.common.collect.Maps;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -12,14 +12,9 @@ import java.util.Map;
  */
 public abstract class AbstractBeanDefinitionReader implements BeanDefinitionReader {
 
-    private Map<String, BeanDefinition> registry;
+    private final Map<String, BeanDefinition> registry = Maps.newHashMap();
 
-    private ResourceLoader resourceLoader;
-
-    protected AbstractBeanDefinitionReader(ResourceLoader resourceLoader) {
-        this.registry = new HashMap<>();
-        this.resourceLoader = resourceLoader;
-    }
+    protected ResourceLoader resourceLoader;
 
     public Map<String, BeanDefinition> getRegistry() {
         return registry;

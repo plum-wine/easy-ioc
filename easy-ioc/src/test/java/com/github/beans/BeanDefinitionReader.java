@@ -1,6 +1,7 @@
 package com.github.beans;
 
 import com.github.beans.definition.BeanDefinition;
+import com.github.beans.definition.impl.XmlBeanDefinitionReader;
 import com.github.beans.io.ResourceLoader;
 import org.junit.Test;
 import org.slf4j.Logger;

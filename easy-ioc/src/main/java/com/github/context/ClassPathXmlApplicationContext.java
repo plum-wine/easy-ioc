@@ -5,7 +5,7 @@ import com.github.beans.definition.BeanDefinition;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.beans.factory.AutowireCapableBeanFactory;
 import com.github.beans.io.ResourceLoader;
-import com.github.beans.XmlBeanDefinitionReader;
+import com.github.beans.definition.impl.XmlBeanDefinitionReader;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class ClassPathXmlApplicationContext extends AbstractApplicationContext {
 
-    private String configLocation;
+    private final String configLocation;
 
     public ClassPathXmlApplicationContext(String configLocation) throws Exception {
         this(configLocation, new AutowireCapableBeanFactory());

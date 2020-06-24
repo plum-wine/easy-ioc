@@ -1,5 +1,6 @@
 package com.github.context;
 
+import com.github.beans.definition.impl.AnnotationBeanDefinitionReader;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.beans.factory.AutowireCapableBeanFactory;
 
@@ -11,20 +12,21 @@ import com.github.beans.factory.AutowireCapableBeanFactory;
  */
 public class AnnotationConfigApplicationContext extends AbstractApplicationContext {
 
-    private String packages;
+    private final String packages;
 
     public AnnotationConfigApplicationContext(String packages) throws Exception {
         this(packages, new AutowireCapableBeanFactory());
-        this.packages = packages;
     }
 
     public AnnotationConfigApplicationContext(String packages, AbstractBeanFactory beanFactory) throws Exception {
         super(beanFactory);
+        this.packages = packages;
         refresh();
     }
 
     @Override
     protected void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception {
-
+        AnnotationBeanDefinitionReader annotationBeanDefinitionReader = new AnnotationBeanDefinitionReader();
+        annotationBeanDefinitionReader.loadBeanDefinitions(this.packages);
     }
 }

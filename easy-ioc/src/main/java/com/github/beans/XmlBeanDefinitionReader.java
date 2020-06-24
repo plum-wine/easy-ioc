@@ -1,7 +1,5 @@
 package com.github.beans;
 
-import com.github.beans.BeanReference;
-import com.github.beans.PropertyValue;
 import com.github.beans.definition.AbstractBeanDefinitionReader;
 import com.github.beans.definition.BeanDefinition;
 import com.github.beans.io.ResourceLoader;
@@ -86,4 +84,5 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 			}
 		}
 	}
+
 }

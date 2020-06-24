@@ -40,9 +40,8 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     /**
-     * 子类实现如何获取BeanDefinition
-     * xml?
-     * annotation?
+     * 由子类去实现如何获取BeanDefinition
+     * 可以是xml或者annotation等方式
      */
     protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
 

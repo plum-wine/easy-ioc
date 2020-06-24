@@ -20,7 +20,8 @@ public class AnnotationConfigApplicationContextTest {
 
     @Test
     public void testConfig() throws Exception {
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.github.annotation.service");
+        AnnotationConfigApplicationContext applicationContext =
+                new AnnotationConfigApplicationContext("com.github.annotation.service");
         AService aService = (AService) applicationContext.getBean("aService");
         String result = aService.doMessage("hello");
         LOGGER.info("result:{}", result);

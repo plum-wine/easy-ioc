@@ -30,9 +30,8 @@ public class AnnotationBeanDefinitionReader extends AbstractBeanDefinitionReader
     public void loadBeanDefinitions(String packages) throws Exception {
         Set<Class<?>> classes = ClassUtils.extractPackageClass(packages);
         classes.forEach(clazz -> {
-            Annotation[] annotations = clazz.getAnnotations();
-            for (Annotation annotation : annotations) {
-                if (COMPONENTS.contains(annotation.getClass())) {
+            for (Class<? extends Annotation> annotation : COMPONENTS) {
+                if (clazz.isAnnotationPresent(annotation)) {
                     processBeanDefinition(clazz);
                 }
             }

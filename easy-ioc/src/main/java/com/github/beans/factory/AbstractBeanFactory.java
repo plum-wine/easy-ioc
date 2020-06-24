@@ -1,6 +1,6 @@
 package com.github.beans.factory;
 
-import com.github.annotation.AutoWired;
+import com.github.annotation.Autowired;
 import com.github.beans.BeanPostProcessor;
 import com.github.beans.definition.BeanDefinition;
 import org.slf4j.Logger;
@@ -90,7 +90,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
         Constructor<?>[] constructors = beanDefinition.getBeanClass().getConstructors();
         for (Constructor<?> constructor : constructors) {
-            if (constructor.isAnnotationPresent(AutoWired.class) && (constructor.getAnnotation(AutoWired.class)).required()) {
+            if (constructor.isAnnotationPresent(Autowired.class) && (constructor.getAnnotation(Autowired.class)).required()) {
                 List<Object> objs = new ArrayList<>();
                 for (Class<?> clazz : constructor.getParameterTypes()) {
                     List beansForType = getBeansForType(clazz);

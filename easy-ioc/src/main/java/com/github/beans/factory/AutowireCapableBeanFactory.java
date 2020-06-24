@@ -1,6 +1,6 @@
 package com.github.beans.factory;
 
-import com.github.annotation.AutoWired;
+import com.github.annotation.Autowired;
 import com.github.beans.BeanFactoryAware;
 import com.github.beans.BeanReference;
 import com.github.beans.PropertyValue;
@@ -48,7 +48,7 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
     private void applyPropertyValuesForField(Object bean) throws Exception {
         for (Field field : bean.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(AutoWired.class) && field.getAnnotation(AutoWired.class).required()) {
+            if (field.isAnnotationPresent(Autowired.class) && field.getAnnotation(Autowired.class).required()) {
                 field.setAccessible(true);
                 List<Object> beansForType = getBeansForType(field.getType());
                 //todo implement qualifier

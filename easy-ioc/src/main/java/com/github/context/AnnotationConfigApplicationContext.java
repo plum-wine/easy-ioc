@@ -1,8 +1,11 @@
 package com.github.context;
 
+import com.github.beans.definition.BeanDefinition;
 import com.github.beans.definition.impl.AnnotationBeanDefinitionReader;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.beans.factory.AutowireCapableBeanFactory;
+
+import java.util.Map;
 
 /**
  * @author hangs.zhang
@@ -28,5 +31,9 @@ public class AnnotationConfigApplicationContext extends AbstractApplicationConte
     protected void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception {
         AnnotationBeanDefinitionReader annotationBeanDefinitionReader = new AnnotationBeanDefinitionReader();
         annotationBeanDefinitionReader.loadBeanDefinitions(this.packages);
+
+        for (Map.Entry<String, BeanDefinition> beanDefinitionEntry : annotationBeanDefinitionReader.getRegistry().entrySet()) {
+            beanFactory.registerBeanDefinition(beanDefinitionEntry.getKey(), beanDefinitionEntry.getValue());
+        }
     }
 }

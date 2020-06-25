@@ -55,7 +55,7 @@ public class RequestProcessorChain {
             }
         } catch (Exception e) {
             // 3. 期间如果出现异常, 交给内部异常渲染器处理
-            this.resultRender = new InternalErrorResultRender();
+            this.resultRender = new InternalErrorResultRender(e.getMessage());
             LOGGER.error("doRequestProcessorChain error", e);
         }
     }

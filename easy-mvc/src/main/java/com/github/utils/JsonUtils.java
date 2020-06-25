@@ -1,4 +1,4 @@
-package com.github.common.transform;
+package com.github.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;

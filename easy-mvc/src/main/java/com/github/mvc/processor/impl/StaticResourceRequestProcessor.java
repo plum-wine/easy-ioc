@@ -10,8 +10,10 @@ import com.github.mvc.processor.RequestProcessor;
  * function: jsp页面请求处理
  */
 public class StaticResourceRequestProcessor implements RequestProcessor {
+
     @Override
     public boolean processor(RequestProcessorChain requestProcessorChain) {
         return true;
     }
+
 }

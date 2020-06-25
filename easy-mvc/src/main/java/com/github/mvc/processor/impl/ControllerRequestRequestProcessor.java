@@ -74,27 +74,24 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
                 Map<String, Class<?>> methodParams = Maps.newHashMap();
                 Parameter[] parameters = method.getParameters();
 
-                if (Objects.isNull(parameters)) {
-                    return;
-                }
-
-                for (Parameter parameter : parameters) {
-                    RequestParam requestParam = parameter.getAnnotation(RequestParam.class);
-                    // 目前暂定所有参数都需要被@RequestParam标记
-                    if (Objects.isNull(requestParam)) {
-                        throw new RuntimeException("not found @RequestParam");
+                if (!Objects.isNull(parameters)) {
+                    for (Parameter parameter : parameters) {
+                        RequestParam requestParam = parameter.getAnnotation(RequestParam.class);
+                        // 目前暂定所有参数都需要被@RequestParam标记
+                        if (Objects.isNull(requestParam)) {
+                            throw new RuntimeException("not found @RequestParam");
+                        }
+                        methodParams.put(requestParam.value(), parameter.getType());
                     }
-                    methodParams.put(requestParam.value(), parameter.getType());
-
-                    // 4. 封装成RequestPathInfo与ControllerMethod放置到映射表
-                    String httpMethod = String.valueOf(methodRequestMapping.method());
-                    RequestPathInfo requestPathInfo = new RequestPathInfo(httpMethod, url);
-                    if (pathControllerMap.containsKey(requestPathInfo)) {
-                        throw new RuntimeException("duplicate url");
-                    }
-                    ControllerMethod controllerMethod = new ControllerMethod(requestMappingClass, method, methodParams);
-                    pathControllerMap.put(requestPathInfo, controllerMethod);
                 }
+                // 4. 封装成RequestPathInfo与ControllerMethod放置到映射表
+                String httpMethod = String.valueOf(methodRequestMapping.method());
+                RequestPathInfo requestPathInfo = new RequestPathInfo(httpMethod, url);
+                if (pathControllerMap.containsKey(requestPathInfo)) {
+                    throw new RuntimeException("duplicate url");
+                }
+                ControllerMethod controllerMethod = new ControllerMethod(requestMappingClass, method, methodParams);
+                pathControllerMap.put(requestPathInfo, controllerMethod);
             }
         });
     }
@@ -116,9 +113,7 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
     }
 
     private void setResultRender(Object result, ControllerMethod controllerMethod, RequestProcessorChain requestProcessorChain) {
-        if (Objects.isNull(result)) {
-            return;
-        } else {
+        if (!Objects.isNull(result)) {
             Method invokeMethod = controllerMethod.getInvokeMethod();
             ResultRender resultRender;
             if (invokeMethod.isAnnotationPresent(ResponseBody.class)) {

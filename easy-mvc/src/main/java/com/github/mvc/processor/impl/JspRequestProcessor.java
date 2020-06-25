@@ -10,8 +10,10 @@ import com.github.mvc.processor.RequestProcessor;
  * function:
  */
 public class JspRequestProcessor implements RequestProcessor {
+
     @Override
     public boolean processor(RequestProcessorChain requestProcessorChain) {
         return true;
     }
+
 }

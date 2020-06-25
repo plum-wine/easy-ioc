@@ -14,7 +14,7 @@ public class PreRequestProcessor implements RequestProcessor {
 
     @Override
     public boolean processor(RequestProcessorChain requestProcessorChain) {
-        return false;
+        return true;
     }
 
 }

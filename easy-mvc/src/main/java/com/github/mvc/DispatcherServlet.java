@@ -34,7 +34,7 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void init() {
         BeanContainer instance = BeanContainer.getInstance();
-        instance.loadBeans("com.github");
+        instance.loadBeans("com.github.test");
         new DependencyInjector().doIoc();
 
         // 初始化请求处理器责任链

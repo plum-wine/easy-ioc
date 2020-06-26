@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +28,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Override
-    public Object getBean(String name) throws Exception {
+    public Object getBean(String name) {
         BeanDefinition beanDefinition = beanDefinitionMap.get(name);
         if (beanDefinition == null) {
             throw new IllegalArgumentException("No bean named " + name + " is defined");
@@ -49,7 +50,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
      * 此方法十分重要， 在初始化bean的同时，把所有的bean
      * 都传入进实现了BeanPostProcessor接口的实现类中，更新对象为process增强后的bean
      */
-    protected Object initializeBean(Object bean, String name) throws Exception {
+    protected Object initializeBean(Object bean, String name) {
         // 初始化的时候 调用BeanPostProcessor
         for (BeanPostProcessor beanPostProcessor : beanPostProcessors) {
             bean = beanPostProcessor.postProcessBeforeInitialization(bean, name);
@@ -66,7 +67,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         return bean;
     }
 
-    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) throws Exception {
+    public void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
         beanDefinitionMap.put(name, beanDefinition);
         beanDefinitionNames.add(name);
     }
@@ -74,20 +75,20 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     /**
      * 载入所有的bean
      */
-    public void preInstantiateSingletons() throws Exception {
+    public void preInstantiateSingletons() {
         for (String beanName : this.beanDefinitionNames) {
             getBean(beanName);
         }
     }
 
-    protected Object doCreateBean(BeanDefinition beanDefinition) throws Exception {
+    protected Object doCreateBean(BeanDefinition beanDefinition) {
         Object bean = createBeanInstance(beanDefinition);
         beanDefinition.setBean(bean);
         applyPropertyValues(bean, beanDefinition);
         return bean;
     }
 
-    protected Object createBeanInstance(BeanDefinition beanDefinition) throws Exception {
+    protected Object createBeanInstance(BeanDefinition beanDefinition) {
         Constructor<?>[] constructors = beanDefinition.getBeanClass().getConstructors();
         for (Constructor<?> constructor : constructors) {
             if (constructor.isAnnotationPresent(Autowired.class) && (constructor.getAnnotation(Autowired.class)).required()) {
@@ -102,19 +103,27 @@ public abstract class AbstractBeanFactory implements BeanFactory {
                     }
                 }
                 if (objs.size() == constructor.getParameterCount()) {
-                    return constructor.newInstance(objs.toArray());
+                    try {
+                        return constructor.newInstance(objs.toArray());
+                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
                     throw new RuntimeException("构造注入缺少指定类型的bean");
                 }
             }
         }
-        return beanDefinition.getBeanClass().newInstance();
+        try {
+            return beanDefinition.getBeanClass().newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
      * 模板方法,交由子类去实现属性注入,父类控制注入流程
      */
-    protected abstract void applyPropertyValues(Object bean, BeanDefinition beanDefinition) throws Exception;
+    protected abstract void applyPropertyValues(Object bean, BeanDefinition beanDefinition);
 
     public void addBeanPostProcessor(BeanPostProcessor beanPostProcessor) {
         this.beanPostProcessors.add(beanPostProcessor);
@@ -123,7 +132,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     /**
      * 根据class获取bean
      */
-    public List getBeansForType(Class<?> type) throws Exception {
+    public List getBeansForType(Class<?> type) {
         List<Object> beans = new ArrayList<>();
         for (String beanDefinitionName : beanDefinitionNames) {
             if (type.isAssignableFrom(beanDefinitionMap.get(beanDefinitionName).getBeanClass())) {
@@ -132,4 +141,5 @@ public abstract class AbstractBeanFactory implements BeanFactory {
         }
         return beans;
     }
+
 }

@@ -2,7 +2,7 @@ package com.github.mvc.render.impl;
 
 import com.github.mvc.RequestProcessorChain;
 import com.github.mvc.render.ResultRender;
-import com.github.utils.JsonUtils;
+import com.github.mvc.utils.JsonUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;

@@ -1,6 +1,7 @@
 package com.github.mvc.processor.impl;
 
-import com.github.core.BeanContainer;
+import com.github.annotation.component.Controller;
+import com.github.context.AnnotationConfigApplicationContext;
 import com.github.mvc.RequestProcessorChain;
 import com.github.mvc.annotation.RequestMapping;
 import com.github.mvc.annotation.RequestParam;
@@ -12,7 +13,8 @@ import com.github.mvc.render.impl.ResourceNotFoundRender;
 import com.github.mvc.render.impl.ViewResultRender;
 import com.github.mvc.type.ControllerMethod;
 import com.github.mvc.type.RequestPathInfo;
-import com.github.utils.ConvertUtils;
+import com.github.mvc.utils.ConvertUtils;
+import com.github.mvc.utils.MyStringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -36,15 +38,15 @@ import java.util.Set;
  */
 public class ControllerRequestRequestProcessor implements RequestProcessor {
 
-    private final BeanContainer beanContainer;
+    private final AnnotationConfigApplicationContext applicationContext;
 
     private final Map<RequestPathInfo, ControllerMethod> pathControllerMap = Maps.newConcurrentMap();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    public ControllerRequestRequestProcessor() {
-        this.beanContainer = BeanContainer.getInstance();
-        Set<Class<?>> requestMappingClasses = this.beanContainer.getClassesByAnnotation(RequestMapping.class);
+    public ControllerRequestRequestProcessor(AnnotationConfigApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
+        Set<Class<?>> requestMappingClasses = this.applicationContext.getClassesByAnnotation(RequestMapping.class);
         initPathControllerMap(requestMappingClasses);
     }
 
@@ -90,7 +92,10 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
                 if (pathControllerMap.containsKey(requestPathInfo)) {
                     throw new RuntimeException("duplicate url");
                 }
-                ControllerMethod controllerMethod = new ControllerMethod(requestMappingClass, method, methodParams);
+
+                Controller controller = requestMappingClass.getAnnotation(Controller.class);
+                String beanName = StringUtils.isNotBlank(controller.value()) ? controller.value() : MyStringUtils.toLowerCaseFirstOne(requestMappingClass.getSimpleName());
+                ControllerMethod controllerMethod = new ControllerMethod(beanName, requestMappingClass, method, methodParams);
                 pathControllerMap.put(requestPathInfo, controllerMethod);
             }
         });
@@ -148,7 +153,7 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
             params.add(value);
         });
 
-        Object bean = beanContainer.getBean(controllerMethod.getControllerClass());
+        Object bean = applicationContext.getBean(controllerMethod.getBeanName());
         Method invokeMethod = controllerMethod.getInvokeMethod();
         invokeMethod.setAccessible(true);
         Object result;

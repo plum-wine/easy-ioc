@@ -1,4 +1,4 @@
-package com.github.utils;
+package com.github.mvc.utils;
 
 import org.apache.commons.lang3.StringUtils;
 

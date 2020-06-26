@@ -9,5 +9,4 @@ import com.github.message.ApplicationEventPublisher;
  */
 public interface ApplicationContext extends BeanFactory, ApplicationEventPublisher {
 
-
 }

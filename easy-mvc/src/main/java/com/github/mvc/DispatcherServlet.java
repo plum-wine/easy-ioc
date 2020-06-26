@@ -1,7 +1,6 @@
 package com.github.mvc;
 
-import com.github.core.BeanContainer;
-import com.github.core.DependencyInjector;
+import com.github.context.AnnotationConfigApplicationContext;
 import com.github.mvc.processor.RequestProcessor;
 import com.github.mvc.processor.impl.ControllerRequestRequestProcessor;
 import com.github.mvc.processor.impl.JspRequestProcessor;
@@ -33,15 +32,13 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() {
-        BeanContainer instance = BeanContainer.getInstance();
-        instance.loadBeans("com.github.test");
-        new DependencyInjector().doIoc();
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext("com.github.test");
 
         // 初始化请求处理器责任链
         PROCESSORS.add(new PreRequestProcessor());
         PROCESSORS.add(new StaticResourceRequestProcessor());
         PROCESSORS.add(new JspRequestProcessor());
-        PROCESSORS.add(new ControllerRequestRequestProcessor());
+        PROCESSORS.add(new ControllerRequestRequestProcessor(context));
     }
 
     @Override

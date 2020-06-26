@@ -1,6 +1,6 @@
 package com.github.test.controller;
 
-import com.github.annotation.Controller;
+import com.github.annotation.component.Controller;
 import com.github.mvc.annotation.RequestMapping;
 import com.github.mvc.annotation.RequestParam;
 import com.github.mvc.annotation.ResponseBody;

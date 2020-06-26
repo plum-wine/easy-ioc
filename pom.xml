@@ -11,7 +11,6 @@
     <modules>
         <module>easy-mvc</module>
         <module>easy-ioc</module>
-        <module>easy-common</module>
     </modules>
 
     <properties>

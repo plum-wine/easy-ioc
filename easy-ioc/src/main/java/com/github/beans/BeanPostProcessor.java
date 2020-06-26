@@ -2,8 +2,8 @@ package com.github.beans;
 
 public interface BeanPostProcessor {
 
-	Object postProcessBeforeInitialization(Object bean, String beanName) throws Exception;
+	Object postProcessBeforeInitialization(Object bean, String beanName);
 
-	Object postProcessAfterInitialization(Object bean, String beanName) throws Exception;
+	Object postProcessAfterInitialization(Object bean, String beanName);
 
 }

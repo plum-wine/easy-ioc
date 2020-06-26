@@ -12,13 +12,13 @@ public class BeanInitializeLogger implements BeanPostProcessor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws Exception {
+	public Object postProcessBeforeInitialization(Object bean, String beanName) {
 		LOGGER.info("Initialize bean " + beanName + " start!");
 		return bean;
 	}
 
 	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws Exception {
+	public Object postProcessAfterInitialization(Object bean, String beanName) {
 		LOGGER.info("Initialize bean " + beanName + " end!");
 		return bean;
 	}

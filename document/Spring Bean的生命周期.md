@@ -1,8 +1,9 @@
 01. 生成BeanDefinition
+
 02. BeanReference
 03. 对象实例化
 04. 属性注入
-05. BeanFacotryAware-调用setBeanFactory方法
+05. BeanFactoryAware-调用setBeanFactory方法
 06. ApplicationAware-调用setApplicationContext方法
 07. BeanPostProcessor beforeInitialization
 08. InitializationBean afterPropertiesSet

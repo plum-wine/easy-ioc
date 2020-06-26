@@ -1,4 +1,4 @@
-package com.github.utils;
+package com.github.mvc.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;

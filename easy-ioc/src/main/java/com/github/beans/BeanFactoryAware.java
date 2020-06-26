@@ -11,9 +11,7 @@ public interface BeanFactoryAware {
 
     /**
      * setBeanFactory
-     * @param beanFactory
-     * @throws Exception
      */
-    void setBeanFactory(BeanFactory beanFactory) throws Exception;
+    void setBeanFactory(BeanFactory beanFactory);
 
 }

@@ -9,19 +9,19 @@ import java.util.List;
 
 public class MessageHandlerHolder implements BeanPostProcessor {
 
-    private List<MessageHandlerInvocation> messageHandlers = new ArrayList<>();
+    private final List<MessageHandlerInvocation> messageHandlers = new ArrayList<>();
 
     public List<MessageHandlerInvocation> getMessageHandlers() {
         return messageHandlers;
     }
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws Exception {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
         return bean;
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws Exception {
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
         for (Method method : bean.getClass().getMethods()) {
             if (method.isAnnotationPresent(EventListener.class)) {
                 if (method.getParameters().length == 1) {

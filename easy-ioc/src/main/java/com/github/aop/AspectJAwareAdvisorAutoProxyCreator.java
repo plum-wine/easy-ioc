@@ -17,12 +17,12 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
     private AbstractBeanFactory beanFactory;
 
     @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws Exception {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) {
         return bean;
     }
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws Exception {
+    public Object postProcessAfterInitialization(Object bean, String beanName) {
         if (bean instanceof AspectJExpressionPointcutAdvisor) {
             return bean;
         }
@@ -49,7 +49,7 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
     }
 
     @Override
-    public void setBeanFactory(BeanFactory beanFactory) throws Exception {
+    public void setBeanFactory(BeanFactory beanFactory) {
         this.beanFactory = (AbstractBeanFactory) beanFactory;
     }
 

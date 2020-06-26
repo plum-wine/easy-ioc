@@ -25,18 +25,22 @@ public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
     }
 
     @Override
-    public void loadBeanDefinitions(String location) throws Exception {
+    public void loadBeanDefinitions(String location) {
         InputStream inputStream = getResourceLoader().getResource(location).getInputStream();
         doLoadBeanDefinitions(inputStream);
     }
 
-    protected void doLoadBeanDefinitions(InputStream inputStream) throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = factory.newDocumentBuilder();
-        Document doc = docBuilder.parse(inputStream);
-        // 解析bean
-        registerBeanDefinitions(doc);
-        inputStream.close();
+    protected void doLoadBeanDefinitions(InputStream inputStream) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = factory.newDocumentBuilder();
+            Document doc = docBuilder.parse(inputStream);
+            // 解析bean
+            registerBeanDefinitions(doc);
+            inputStream.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void registerBeanDefinitions(Document doc) {

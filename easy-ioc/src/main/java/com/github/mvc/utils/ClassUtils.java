@@ -1,4 +1,4 @@
-package com.github.utils;
+package com.github.mvc.utils;
 
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;

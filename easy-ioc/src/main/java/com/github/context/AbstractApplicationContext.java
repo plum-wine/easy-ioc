@@ -20,7 +20,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
 
     protected AbstractBeanFactory beanFactory;
 
-    private MessageHandlerHolder messageHandlerHolder = new MessageHandlerHolder();
+    private final MessageHandlerHolder messageHandlerHolder = new MessageHandlerHolder();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -28,7 +28,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         this.beanFactory = beanFactory;
     }
 
-    public void refresh() throws Exception {
+    public void refresh() {
         loadBeanDefinitions(beanFactory);
         //抽象应用上下文 向beanFactory注册beanPostProcessor
         registerBeanPostProcessors(beanFactory);
@@ -43,9 +43,9 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
      * 由子类去实现如何获取BeanDefinition
      * 可以是xml或者annotation等方式
      */
-    protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory) throws Exception;
+    protected abstract void loadBeanDefinitions(AbstractBeanFactory beanFactory);
 
-    private void registerSelf() throws Exception {
+    private void registerSelf() {
         BeanDefinition self = new BeanDefinition();
         self.setBeanClassName(this.getClass().getName());
         self.setBeanClass(this.getClass());
@@ -53,14 +53,14 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
         beanFactory.registerBeanDefinition("applicationContext", self);
     }
 
-    protected void onRefresh() throws Exception {
+    protected void onRefresh() {
         beanFactory.preInstantiateSingletons();
     }
 
     /**
      * 从beanFactory中取出所有的BeanPostProcessor接口的实现类
      */
-    protected void registerBeanPostProcessors(AbstractBeanFactory beanFactory) throws Exception {
+    protected void registerBeanPostProcessors(AbstractBeanFactory beanFactory) {
         List beanPostProcessors = beanFactory.getBeansForType(BeanPostProcessor.class);
         // 全部加入到beanFactory的 beanPostProcessors 引用中去
         for (Object beanPostProcessor : beanPostProcessors) {
@@ -69,7 +69,7 @@ public abstract class AbstractApplicationContext implements ApplicationContext {
     }
 
     @Override
-    public Object getBean(String name) throws Exception {
+    public Object getBean(String name) {
         return beanFactory.getBean(name);
     }
 

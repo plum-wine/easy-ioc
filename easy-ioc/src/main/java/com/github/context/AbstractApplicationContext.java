@@ -3,6 +3,7 @@ package com.github.context;
 import com.github.beans.BeanPostProcessor;
 import com.github.beans.definition.BeanDefinition;
 import com.github.beans.factory.AbstractBeanFactory;
+import com.github.context.ApplicationContext;
 import com.github.message.MessageHandlerHolder;
 import com.github.message.MessageHandlerInvocation;
 import org.slf4j.Logger;

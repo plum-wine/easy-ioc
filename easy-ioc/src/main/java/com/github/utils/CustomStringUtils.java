@@ -1,4 +1,4 @@
-package com.github.mvc.utils;
+package com.github.utils;
 
 /**
  * @author hangs.zhang
@@ -6,9 +6,9 @@ package com.github.mvc.utils;
  * *****************
  * function:
  */
-public final class MyStringUtils {
+public final class CustomStringUtils {
 
-    private MyStringUtils() {
+    private CustomStringUtils() {
     }
 
     public static String toLowerCaseFirstOne(String str) {

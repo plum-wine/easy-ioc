@@ -11,4 +11,5 @@ public class ResourceLoader {
         URL resource = this.getClass().getClassLoader().getResource(location);
         return new UrlResource(resource);
     }
+
 }

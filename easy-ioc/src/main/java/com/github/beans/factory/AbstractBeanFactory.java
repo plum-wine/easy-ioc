@@ -3,12 +3,12 @@ package com.github.beans.factory;
 import com.github.annotation.Autowired;
 import com.github.beans.BeanPostProcessor;
 import com.github.beans.definition.BeanDefinition;
+import com.github.utils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author plum-wine
+ * @function 基础的BeanFactory, 实现了Bean的加载与实例化
  */
 public abstract class AbstractBeanFactory implements BeanFactory {
 
@@ -76,9 +77,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
      * 载入所有的bean
      */
     public void preInstantiateSingletons() {
-        for (String beanName : this.beanDefinitionNames) {
-            getBean(beanName);
-        }
+        beanDefinitionNames.forEach(this::getBean);
     }
 
     protected Object doCreateBean(BeanDefinition beanDefinition) {
@@ -103,21 +102,14 @@ public abstract class AbstractBeanFactory implements BeanFactory {
                     }
                 }
                 if (objs.size() == constructor.getParameterCount()) {
-                    try {
-                        return constructor.newInstance(objs.toArray());
-                    } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
-                        throw new RuntimeException(e);
-                    }
+                    return BeanUtils.newInstance(constructor, objs.toArray());
                 } else {
                     throw new RuntimeException("构造注入缺少指定类型的bean");
                 }
             }
         }
-        try {
-            return beanDefinition.getBeanClass().newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+
+        return BeanUtils.newInstance(beanDefinition.getBeanClass());
     }
 
     /**
@@ -132,7 +124,7 @@ public abstract class AbstractBeanFactory implements BeanFactory {
     /**
      * 根据class获取bean
      */
-    public List getBeansForType(Class<?> type) {
+    public List<Object> getBeansForType(Class<?> type) {
         List<Object> beans = new ArrayList<>();
         for (String beanDefinitionName : beanDefinitionNames) {
             if (type.isAssignableFrom(beanDefinitionMap.get(beanDefinitionName).getBeanClass())) {

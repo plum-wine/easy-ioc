@@ -1,5 +1,4 @@
 01. 生成BeanDefinition
-
 02. BeanReference
 03. 对象实例化
 04. 属性注入
@@ -10,6 +9,6 @@
 09. 自定义初始化方法
 10. BeanPostProcessor afterInitialization
 11. Bean可以使用
-12. DisposableBean destory方法
-13. 自定义destory方法
+12. DisposableBean destroy方法
+13. 自定义destroy方法
 14. 结束

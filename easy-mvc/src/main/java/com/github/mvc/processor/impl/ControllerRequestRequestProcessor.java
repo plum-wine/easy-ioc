@@ -1,7 +1,7 @@
 package com.github.mvc.processor.impl;
 
 import com.github.annotation.component.Controller;
-import com.github.context.AnnotationConfigApplicationContext;
+import com.github.context.impl.AnnotationConfigApplicationContext;
 import com.github.mvc.RequestProcessorChain;
 import com.github.mvc.annotation.RequestMapping;
 import com.github.mvc.annotation.RequestParam;
@@ -14,7 +14,7 @@ import com.github.mvc.render.impl.ViewResultRender;
 import com.github.mvc.type.ControllerMethod;
 import com.github.mvc.type.RequestPathInfo;
 import com.github.mvc.utils.ConvertUtils;
-import com.github.mvc.utils.MyStringUtils;
+import com.github.utils.CustomStringUtils;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
@@ -94,7 +94,7 @@ public class ControllerRequestRequestProcessor implements RequestProcessor {
                 }
 
                 Controller controller = requestMappingClass.getAnnotation(Controller.class);
-                String beanName = StringUtils.isNotBlank(controller.value()) ? controller.value() : MyStringUtils.toLowerCaseFirstOne(requestMappingClass.getSimpleName());
+                String beanName = StringUtils.isNotBlank(controller.value()) ? controller.value() : CustomStringUtils.toLowerCaseFirstOne(requestMappingClass.getSimpleName());
                 ControllerMethod controllerMethod = new ControllerMethod(beanName, requestMappingClass, method, methodParams);
                 pathControllerMap.put(requestPathInfo, controllerMethod);
             }

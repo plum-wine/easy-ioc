@@ -1,6 +1,6 @@
 package com.github.mvc;
 
-import com.github.context.AnnotationConfigApplicationContext;
+import com.github.context.impl.AnnotationConfigApplicationContext;
 import com.github.mvc.processor.RequestProcessor;
 import com.github.mvc.processor.impl.ControllerRequestRequestProcessor;
 import com.github.mvc.processor.impl.JspRequestProcessor;

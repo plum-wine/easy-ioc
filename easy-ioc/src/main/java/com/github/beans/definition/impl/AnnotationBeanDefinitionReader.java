@@ -6,13 +6,13 @@ import com.github.annotation.component.Repository;
 import com.github.annotation.component.Service;
 import com.github.beans.definition.AbstractBeanDefinitionReader;
 import com.github.beans.definition.BeanDefinition;
-import com.github.mvc.utils.ClassUtils;
+import com.github.utils.BeanUtils;
 import com.google.common.collect.Sets;
 
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
-import static com.github.mvc.utils.MyStringUtils.toLowerCaseFirstOne;
+import static com.github.utils.CustomStringUtils.toLowerCaseFirstOne;
 
 /**
  * @author hangs.zhang
@@ -27,7 +27,7 @@ public class AnnotationBeanDefinitionReader extends AbstractBeanDefinitionReader
 
     @Override
     public void loadBeanDefinitions(String packages) {
-        Set<Class<?>> classes = ClassUtils.extractPackageClass(packages);
+        Set<Class<?>> classes = BeanUtils.extractPackageClass(packages);
         classes.forEach(clazz -> {
             for (Class<? extends Annotation> annotation : COMPONENTS) {
                 if (clazz.isAnnotationPresent(annotation)) {

@@ -5,14 +5,14 @@ import com.github.beans.BeanFactoryAware;
 import com.github.beans.BeanReference;
 import com.github.beans.PropertyValue;
 import com.github.beans.definition.BeanDefinition;
+import com.github.utils.BeanUtils;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * 可自动装配内容的BeanFactory
  * @author plum-wine
+ * @function 可自动装配内容的BeanFactory
  */
 public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
@@ -35,17 +35,10 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
 
             try {
                 // 拼出setter方法
-                Method declaredMethod = bean.getClass().getDeclaredMethod("set" + propertyValue.getName().substring(0, 1).toUpperCase() + propertyValue.getName().substring(1), value.getClass());
-                declaredMethod.setAccessible(true);
-                declaredMethod.invoke(bean, value);
+                String setter = "set" + propertyValue.getName().substring(0, 1).toUpperCase() + propertyValue.getName().substring(1);
+                BeanUtils.invokeMethod(setter, bean, value);
             } catch (Exception ex) {
-                try {
-                    Field declaredField = bean.getClass().getDeclaredField(propertyValue.getName());
-                    declaredField.setAccessible(true);
-                    declaredField.set(bean, value);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+                BeanUtils.setFieldValue(propertyValue.getName(), bean, value);
             }
         }
     }
@@ -53,17 +46,12 @@ public class AutowireCapableBeanFactory extends AbstractBeanFactory {
     private void applyPropertyValuesForField(Object bean) {
         for (Field field : bean.getClass().getDeclaredFields()) {
             if (field.isAnnotationPresent(Autowired.class) && field.getAnnotation(Autowired.class).required()) {
-                field.setAccessible(true);
                 List<Object> beansForType = getBeansForType(field.getType());
                 //todo implement qualifier
                 if (beansForType.size() != 1) {
                     throw new RuntimeException("可选注入类型 超过1个, 或者没有可选注入类型");
                 }
-                try {
-                    field.set(bean, beansForType.get(0));
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
+                BeanUtils.setFieldValue(field, bean, beansForType.get(0));
             }
         }
     }

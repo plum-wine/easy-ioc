@@ -20,8 +20,14 @@ import java.io.InputStream;
  */
 public class XmlBeanDefinitionReader extends AbstractBeanDefinitionReader {
 
+    protected ResourceLoader resourceLoader;
+
+    public ResourceLoader getResourceLoader() {
+        return resourceLoader;
+    }
+
     public XmlBeanDefinitionReader(ResourceLoader resourceLoader) {
-        super.resourceLoader = resourceLoader;
+        this.resourceLoader = resourceLoader;
     }
 
     @Override

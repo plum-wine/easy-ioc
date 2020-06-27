@@ -1,4 +1,4 @@
-package com.github.mvc.utils;
+package com.github.utils;
 
 import com.google.common.collect.Sets;
 import org.slf4j.Logger;
@@ -9,6 +9,8 @@ import java.io.FileFilter;
 import java.lang.invoke.MethodHandles;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Objects;
@@ -20,22 +22,63 @@ import java.util.Set;
  * *****************
  * function:
  */
-public final class ClassUtils {
+public final class BeanUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private static final String FILE_PROTOCOL = "file";
 
-    private ClassUtils() {
+    private BeanUtils() {
     }
 
-    public static <T> T newInstance(Class<?> clazz, boolean accessible) {
+    public static <T> T newInstance(Constructor<?> constructor, Object[] objs) {
+        constructor.setAccessible(true);
         try {
-            Constructor<?> constructor = clazz.getDeclaredConstructor();
-            constructor.setAccessible(accessible);
-            return (T) constructor.newInstance();
+            return (T) constructor.newInstance(objs);
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static <T> T newInstance(Class<?> clazz) {
+        try {
+            return (T) clazz.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object invokeMethod(String methodName, Object target, Object... value) {
+        try {
+            Method method;
+            if (value == null || value.length == 0) {
+                method = target.getClass().getDeclaredMethod(methodName);
+            } else {
+                Class<?>[] classes = new Class<?>[value.length];
+                for (int i = 0; i < value.length; i++) {
+                    classes[i] = value[i].getClass();
+                }
+                method = target.getClass().getDeclaredMethod(methodName, classes);
+            }
+            return invokeMethod(method, target, value);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Object invokeMethod(Method method, Object target, Object... value) {
+        try {
+            return method.invoke(target, value);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setFieldValue(String fieldName, Object target, Object fieldValue) {
+        try {
+            Field declaredField = target.getClass().getDeclaredField(fieldName);
+            setFieldValue(declaredField, target, fieldValue);
         } catch (Exception e) {
-            LOGGER.error("newInstance {} error", clazz.getName(), e);
             throw new RuntimeException(e);
         }
     }

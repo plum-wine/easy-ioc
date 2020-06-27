@@ -1,4 +1,4 @@
-package com.github.context;
+package com.github.context.impl;
 
 
 import com.github.beans.definition.BeanDefinition;
@@ -6,6 +6,7 @@ import com.github.beans.definition.impl.XmlBeanDefinitionReader;
 import com.github.beans.factory.AbstractBeanFactory;
 import com.github.beans.factory.AutowireCapableBeanFactory;
 import com.github.beans.io.ResourceLoader;
+import com.github.context.AbstractApplicationContext;
 
 import java.util.Map;
 

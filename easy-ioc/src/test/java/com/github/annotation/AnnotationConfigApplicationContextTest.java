@@ -1,7 +1,7 @@
 package com.github.annotation;
 
 import com.github.annotation.service.AService;
-import com.github.context.AnnotationConfigApplicationContext;
+import com.github.context.impl.AnnotationConfigApplicationContext;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

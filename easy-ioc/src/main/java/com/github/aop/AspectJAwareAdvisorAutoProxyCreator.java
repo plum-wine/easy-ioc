@@ -31,8 +31,9 @@ public class AspectJAwareAdvisorAutoProxyCreator implements BeanPostProcessor, B
         }
 
         // 此处获得advisor, 由advisor来负责判断当前传入的bean是否需要被增强
-        List<AspectJExpressionPointcutAdvisor> advisors = beanFactory.getBeansForType(AspectJExpressionPointcutAdvisor.class);
-        for (AspectJExpressionPointcutAdvisor advisor : advisors) {
+        List<Object> advisorsObjs = beanFactory.getBeansForType(AspectJExpressionPointcutAdvisor.class);
+        for (Object advisorObj : advisorsObjs) {
+            AspectJExpressionPointcutAdvisor advisor = (AspectJExpressionPointcutAdvisor) advisorObj;
             // advisor匹配
             if (advisor.getPointcut().getClassFilter().matches(bean.getClass())) {
                 ProxyFactory advisedSupport = new ProxyFactory();
